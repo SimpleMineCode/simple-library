@@ -3,7 +3,7 @@ package com.simpleminecode.api.plugin;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class SimplePlugin extends JavaPlugin {
+public abstract class SimplePlugin extends JavaPlugin {
     private boolean validLicense = false;
     private boolean isPremium = false;
 

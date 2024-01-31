@@ -16,7 +16,7 @@ public abstract class PlayerCommand implements Command {
             return;
         }
 
-        this.execute((Player) sender, args);
+        this.execute(player, args);
     }
 
     public abstract void execute(Player player, String[] args);

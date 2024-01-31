@@ -4,6 +4,8 @@ import com.simpleminecode.api.configuration.PluginInformation;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.List;
+
 public abstract class SimplePlugin extends JavaPlugin {
     private boolean validLicense = false;
     private boolean isPremium = false;
@@ -18,6 +20,27 @@ public abstract class SimplePlugin extends JavaPlugin {
 
         if (isPremium && !validLicense)
             return;
+
+        if (getResource("config.yml") != null) {
+            saveDefaultConfig();
+            getConfig().options().copyDefaults(true);
+            getConfig().options().setHeader(
+                    List.of(
+                            "=============================================================",
+                            "+-----------------------------------------------------------+",
+                            "|                   Made with SimpleLibrary                 |",
+                            "|    Library made by: SimpleMineCode, MPlugins and Marvin   |",
+                            "|                  https://SimpleMineCode.com               |",
+                            "+-----------------------------------------------------------+",
+                            "=============================================================",
+                            " ",
+                            "Plugin version: " + getDescription().getVersion(),
+                            "Made for Minecraft >=" + getDescription().getAPIVersion()
+                    )
+            );
+            getConfig().addDefault("print_debug_messages", false);
+            saveConfig();
+        }
 
         this.loading();
     }

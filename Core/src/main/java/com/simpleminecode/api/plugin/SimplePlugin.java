@@ -13,6 +13,8 @@ public abstract class SimplePlugin extends JavaPlugin {
 
     @Override
     public final void onLoad() {
+        this.information = new PluginInformation(this);
+
         if (this instanceof final Verifiable verifiable) {
             this.validLicense = verifiable.verify(this);
             this.isPremium = true;
@@ -35,7 +37,10 @@ public abstract class SimplePlugin extends JavaPlugin {
                             "=============================================================",
                             " ",
                             "Plugin version: " + getDescription().getVersion(),
-                            "Made for Minecraft >=" + getDescription().getAPIVersion()
+                            "Made for Minecraft >=" + getDescription().getAPIVersion(),
+                            "",
+                            getInformation().getMadeFor() != null ? "Plugin made for: " + getInformation().getMadeFor()
+                                    : ""
                     )
             );
             getConfig().addDefault("print_debug_messages", false);
@@ -53,7 +58,6 @@ public abstract class SimplePlugin extends JavaPlugin {
             return;
         }
 
-        this.information = new PluginInformation(this);
         this.starting();
         this.printBannerToConsole();
     }

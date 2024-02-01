@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.simpleminecode</groupId>
-    <artifactId>Database</artifactId>
+    <artifactId>database</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>

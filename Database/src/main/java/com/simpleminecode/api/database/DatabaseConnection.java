@@ -6,26 +6,36 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.sql.*;
 
 public class DatabaseConnection {
-    private final String dsn;
+    private final JavaPlugin plugin;
+    private String dsn;
     private String username;
     private String password;
 
     private boolean sqlite = false;
 
-    public DatabaseConnection(JavaPlugin plugin, String username, String password, String host, String databaseName) {
-        this(plugin, username, password, host, databaseName, false);
-    }
-
     public DatabaseConnection(JavaPlugin plugin, String filePath) {
+        this.plugin = plugin;
         this.dsn = "jdbc:sqlite:" + filePath;
         this.sqlite = true;
 
+        createDatabaseSettingsConfig(plugin);
         plugin.getLogger().info("Created SQLite instance with link to '%s'".formatted(filePath));
     }
 
-    public DatabaseConnection(JavaPlugin plugin, String username, String password, String host, String databaseName, boolean createDatabase) {
+    public DatabaseConnection(JavaPlugin plugin) {
+        this.plugin = plugin;
+        createDatabaseSettingsConfig(plugin);
+        plugin.getLogger().info("Created DatabaseConnection instance with username '%s'".formatted(username));
+    }
+
+    public void openConnection(String username, String password, String host, String databaseName) {
+        this.openConnection(username, password, host, databaseName, false);
+    }
+
+    public void openConnection(String username, String password, String host, String databaseName, boolean createDatabase) {
         if (createDatabase) {
-            final DatabaseConnection tempDatabaseConnection = new DatabaseConnection(plugin, username, password, host, "");
+            final DatabaseConnection tempDatabaseConnection = new DatabaseConnection(plugin);
+            tempDatabaseConnection.openConnection(username, password, host, "");
             final String sql = "CREATE DATABASE IF NOT EXISTS ?;";
 
             try (Connection connection = tempDatabaseConnection.getConnection();
@@ -40,8 +50,10 @@ public class DatabaseConnection {
         this.dsn = "jdbc:DatabaseConnection://" + host + ":3306/" + databaseName;
         this.username = username;
         this.password = password;
+    }
 
-        plugin.getLogger().info("Created DatabaseConnection instance with username '%s'".formatted(username));
+    private void createDatabaseSettingsConfig(JavaPlugin plugin) {
+        plugin.saveResource("database-settings.yml", false);
     }
 
     public Statement createStatement(final Connection connection) throws SQLException {

@@ -26,24 +26,7 @@ public abstract class SimplePlugin extends JavaPlugin {
         if (getResource("config.yml") != null) {
             saveDefaultConfig();
             getConfig().options().copyDefaults(true);
-            getConfig().options().setHeader(
-                    List.of(
-                            "=============================================================",
-                            "+-----------------------------------------------------------+",
-                            "|                   Made with SimpleLibrary                 |",
-                            "|    Library made by: SimpleMineCode, MPlugins and Marvin   |",
-                            "|                  https://SimpleMineCode.com               |",
-                            "+-----------------------------------------------------------+",
-                            "=============================================================",
-                            " ",
-                            "Plugin version: " + getDescription().getVersion(),
-                            "Made for Minecraft >=" + getDescription().getAPIVersion(),
-                            "",
-                            getInformation().getMadeFor() != null ? "Plugin made for: " + getInformation().getMadeFor()
-                                    : ""
-                    )
-            );
-            getConfig().addDefault("print_debug_messages", false);
+            //getConfig().addDefault("print_debug_messages", false);
             saveConfig();
         }
 
